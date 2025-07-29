@@ -45,10 +45,8 @@ const firmwareData = [
 ]
 
 export default function OtaUploadForm() {
-  const [deviceId, setDeviceId] = useState("")
   const [version, setVersion] = useState("")
   const [targetDevice, setTargetDevice] = useState("")
-  const [fileName, setFileName] = useState("")
   const [releaseNote, setReleaseNote] = useState("")
   const [file, setFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
@@ -59,29 +57,21 @@ export default function OtaUploadForm() {
 
   // Validation
   const [errors, setErrors] = useState({
-    deviceId: "",
     version: "",
     file: "",
-    fileName: '',
     releaseNote: "",
     targetDevice: "",
   })
 
   const validateForm = () => {
     const newErrors = {
-      deviceId: "",
       version: "",
       file: "",
-      fileName: '',
       releaseNote: "",
       targetDevice: "",
     }
 
-    if (!deviceId.trim()) {
-      newErrors.deviceId = "Device ID is required"
-    } else if (deviceId.length < 3) {
-      newErrors.deviceId = "Device ID must be at least 3 characters"
-    }
+    
 
     if (!version.trim()) {
       newErrors.version = "Version is required"
@@ -101,11 +91,7 @@ export default function OtaUploadForm() {
       newErrors.targetDevice = "Target Device must be more than 3 characters"
     }
 
-    if (!fileName.trim()) {
-      newErrors.fileName = "File Name is required"
-    } else if (fileName.length < 4) {
-      newErrors.fileName = "File Name must be more than 3 characters"
-    }
+    
 
     if (!releaseNote.trim()) {
       newErrors.releaseNote = "Release Note is required"
@@ -161,14 +147,11 @@ export default function OtaUploadForm() {
   }
 
   const resetForm = () => {
-    setDeviceId("")
     setVersion("")
     setFile(null)
     setErrors({
-      deviceId: "",
       version: "",
       file: "",
-      fileName: '',
       releaseNote: "",
       targetDevice: "",
     })
@@ -237,7 +220,7 @@ export default function OtaUploadForm() {
             <div>
               <h3 className="text-lg font-semibold text-green-700">Upload Successful!</h3>
               <p className="text-sm text-muted-foreground mt-2">
-                Firmware version {version} has been uploaded for device {deviceId}
+                Firmware version {version} has been uploaded for device {targetDevice}
               </p>
             </div>
             <Button onClick={resetForm} variant="outline" className="w-full bg-transparent">
@@ -263,25 +246,29 @@ export default function OtaUploadForm() {
           <form onSubmit={handleSubmit} className="space-y-6 ">
             {/* Device ID */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+              
+              {/* Target device */}
               <div className="space-y-2">
-                <Label htmlFor="deviceId">Device ID</Label>
+                <Label htmlFor="targetDevice">Target Device</Label>
                 <Input
-                  id="deviceId"
+                  id="targetDevice"
                   type="text"
-                  placeholder="Enter device identifier"
-                  value={deviceId}
+                  placeholder="Access control"
+                  value={targetDevice}
                   onChange={(e) => {
-                    setDeviceId(e.target.value)
-                    if (errors.deviceId) setErrors((prev) => ({ ...prev, deviceId: "" }))
+                    setTargetDevice(e.target.value)
+                    if (errors.targetDevice) setErrors((prev) => ({ ...prev, targetDevice: "" }))
                   }}
-                  className={errors.deviceId ? "border-red-500" : ""}
+                  className={errors.targetDevice ? "border-red-500" : ""}
                 />
-                {errors.deviceId && (
+                {errors.targetDevice && (
                   <p className="text-sm text-red-500 flex items-center gap-1">
                     <AlertCircle className="h-3 w-3" />
-                    {errors.deviceId}
+                    {errors.targetDevice}
                   </p>
                 )}
+
               </div>
 
               {/* Version */}
@@ -306,51 +293,6 @@ export default function OtaUploadForm() {
                 )}
               </div>
 
-              {/* Target device */}
-              <div className="space-y-2">
-                <Label htmlFor="targetDevice">Target Device</Label>
-                <Input
-                  id="targetDevice"
-                  type="text"
-                  placeholder="Access control"
-                  value={targetDevice}
-                  onChange={(e) => {
-                    setTargetDevice(e.target.value)
-                    if (errors.targetDevice) setErrors((prev) => ({ ...prev, targetDevice: "" }))
-                  }}
-                  className={errors.targetDevice ? "border-red-500" : ""}
-                />
-                {errors.targetDevice && (
-                  <p className="text-sm text-red-500 flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" />
-                    {errors.targetDevice}
-                  </p>
-                )}
-
-              </div>
-
-              {/* Filename */}
-              <div className="space-y-2">
-                <Label htmlFor="FileName">File Name</Label>
-                <Input
-                  id="fileName"
-                  type="text"
-                  placeholder="Access control"
-                  value={fileName}
-                  onChange={(e) => {
-                    setFileName(e.target.value)
-                    if (errors.fileName) setErrors((prev) => ({ ...prev, fileName: "" }))
-                  }}
-                  className={errors.fileName ? "border-red-500" : ""}
-                />
-                {errors.fileName && (
-                  <p className="text-sm text-red-500 flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" />
-                    {errors.fileName}
-                  </p>
-                )}
-
-              </div>
 
               {/* Release note */}
               <div className="space-y-2">
@@ -379,8 +321,8 @@ export default function OtaUploadForm() {
               <div className="space-y-2">
                 <Label htmlFor="checksome">CheckSum</Label>
                 <Input
-                  id="checksome"
-                  type="date"
+                  id="checksum"
+                  type="text"
                   placeholder="29th of July, 2025"
                   // value={version}
                   disabled
