@@ -242,10 +242,10 @@ export default function OtaUploadForm() {
           </CardTitle>
           <CardDescription>Upload firmware updates for your IoT devices</CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6 ">
+        <CardContent className="flex w-full justify-center ">
+          <form onSubmit={handleSubmit} className="w-full  space-y-6 max-w-md">
             {/* Device ID */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="w-full grid grid-cols-1 md:grid-cols-1  gap-4 ">
 
               
               {/* Target device */}
@@ -323,7 +323,7 @@ export default function OtaUploadForm() {
                 <Input
                   id="checksum"
                   type="text"
-                  placeholder="29th of July, 2025"
+                  placeholder="a1b2c3d4e5f6g7h8i9j0"
                   // value={version}
                   disabled
                 />
